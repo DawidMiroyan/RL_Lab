@@ -114,11 +114,48 @@ class KBandit(Bandit):
         self.best_action = 0
         self.bandits = [Gaussian_Bandit_NonStat() for _ in range(self.k)]
 
+<<<<<<< HEAD
     def reset(self):
         """ Resets each of the k bandits """
         for bandit in self.bandits:
             bandit.reset()
         self.best_action = np.argmax([bandit.mean for bandit in self.bandits])  # printing purposes
+=======
+class KBandit(Bandit):
+    """ Set of k Gaussian_Bandits. """
+    def __init__(self, k, **kwargs):
+        """
+        Instantiates the k-armed bandit, with a number of arms, and initializes
+        the set of bandits to new gaussian bandits in a bandits list.
+        The reset() method is supposedly called from outside.
+        Parameters
+        ----------
+        k: positive int
+            Number of arms of the problem.
+        """
+        self.k = k
+        self.bandits = [Gaussian_Bandit() for _ in range(self.k)]
+
+    def reset(self):
+        """ Resets each of the k bandits. """
+        for bandit in self.bandits:
+            bandit.reset()
+        self.best_action = np.argmax([bandit.mean for bandit in self.bandits]) # printing purposes
+
+    def pull(self, action:int) -> float:
+        """
+        Pulls the lever from Bandit #action. Returns the reward.
+        Parameters
+        ----------
+        action: positive int < k
+            Lever to pull.
+        Returns
+        -------
+        reward : float
+            Reward for pulling this lever.
+        """
+        return self.bandits[action].pull()
+>>>>>>> 61a3bde02e538eb708f7f3ef8fb22c3e4b759a85
 
     def pull(self, action: int) -> float:
         """
