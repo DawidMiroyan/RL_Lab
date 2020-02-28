@@ -1,4 +1,7 @@
 # RL_Lab
+### DEADLINE
+Thursday 27th
+
 ### Introduction
 In this Lab exercise you'll be introduced to:
 1. A small warmup exercise with numpy, Matplotlib.
