@@ -8,7 +8,7 @@ from gym.envs.registration import register
 
 # code to set a gym config
 # 4x4 environment
-kwargs = {'map_name': '4x4', 'is_slippery': False}
+#kwargs = {'map_name': '4x4', 'is_slippery': False}
 # 8x8 environment
 kwargs = {'map_name': '8x8', 'is_slippery': True}
 register(
@@ -31,7 +31,7 @@ state_size = env.observation_space.n
 
 # TODO Declare your q-table based on number of states and actions.
 # numpy arr of 16x4 of datatype float (state_size x action_size)
-qtable = np.zeros((state_size, action_size), dtype=np.float)
+qtable = np.zeros((state_size, action_size))
 
 
 class Agent(object):
@@ -49,14 +49,14 @@ class Agent(object):
         qtable: numpy 2d-array
         """
         self.qtable = qtable
-        self.learning_rate = 0.1           # Learning rate
-        self.gamma = 0.95                  # Discounting rate
+        self.learning_rate = 0.05           # Learning rate
+        self.gamma = 0.80                  # Discounting rate
 
         # Exploration parameters
         self.epsilon = 1.0                 # Exploration rate
         self.max_epsilon = 1.0             # Exploration probability at start
         self.min_epsilon = 0.01            # Minimum exploration probability
-        self.decay_rate = 0.001            # Exponential decay rate for exploration prob
+        self.decay_rate = 0.0005            # Exponential decay rate for exploration prob
 
     def act(self, state, exp_exp_tradeoff):
         """
@@ -142,7 +142,7 @@ class Trainer(object):
         """
         # config of your run.
         self.total_episodes = 20000        # Total episodes
-        self.max_steps = 99                # Max steps per episode
+        self.max_steps = 200                # Max steps per episode
 
         # q-table
         self.qtable = qtable
@@ -207,7 +207,7 @@ class Trainer(object):
         print(self.agent.qtable)
 
         # printing epsilon
-        print(self.agent.epsilon)
+        print('epsilon:', self.agent.epsilon)
 
         return self.qtable
 
@@ -221,7 +221,7 @@ def test():
         done = False
         print("*****************************")
         print("EPISODE ", episode)
-        for step in range(99):
+        for step in range(200):
             #env.render()
             # Take the action (index) that have the maximum expected future reward given that state
             action = np.argmax(qtable[state, :])
@@ -231,7 +231,7 @@ def test():
             if done:
                 print('\n \x1b[6;30;42m' + 'Success!' + '\x1b[0m')
                 action = np.argmax(qtable[state, :])
-                print(action)
+                #print(action)
                 env.render()
                 break
             state = new_state
