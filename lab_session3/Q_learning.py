@@ -49,26 +49,24 @@ class Agent(object):
         qtable: numpy 2d-array
         """
         self.qtable = qtable
-        self.learning_rate = 0.05           # Learning rate
-        self.gamma = 0.80                  # Discounting rate
+        self.learning_rate = 0.28           # Learning rate
+        self.gamma = 0.975                  # Discounting rate
 
         # Exploration parameters
         self.epsilon = 1.0                 # Exploration rate
         self.max_epsilon = 1.0             # Exploration probability at start
         self.min_epsilon = 0.01            # Minimum exploration probability
-        self.decay_rate = 0.0005            # Exponential decay rate for exploration prob
+        self.decay_rate = 0.0025            # Exponential decay rate for exploration prob
 
-    def act(self, state, exp_exp_tradeoff):
+    def act(self, state):
         """
-        Function where agent acts.
+        Function where agent acts with policy eps-greedy.
+        Epsilon is updated outside this method.
 
         Parameters
         ----------
         state: numpy int64
             current state of the environment
-
-        exp_exp_tradeoff: float
-            exploration and exploitation tradeoff
 
         Returns
         -------
@@ -78,10 +76,16 @@ class Agent(object):
         """
         # TODO Write code to check if your agent wants to explore or exploit
         # eps-Greedy approach: act randomly with probability eps
-        if exp_exp_tradeoff < self.epsilon:
-            return np.random.randint(0, action_size)
+        rand = random.uniform(0, 1)
+
+        if rand < self.epsilon:
+            return np.random.choice(action_size)
         else:
-            return np.argmax(self.qtable[state])
+            # Act on current policy
+            # Choose random out of the max values to break ties arbitralily
+            max_elem = np.max(self.qtable[state])
+            choices = np.where(self.qtable[state] == max_elem)[0]	
+            return np.random.choice(choices)
 
 
     def learn(self, state, action, reward, new_state):
@@ -173,7 +177,7 @@ class Trainer(object):
                 exp_exp_tradeoff = random.uniform(0, 1)
 
                 # take an action
-                action = self.agent.act(state, exp_exp_tradeoff)
+                action = self.agent.act(state)
 
                 # get feedback from environment
                 new_state, reward, done, info = env.step(action)
@@ -214,24 +218,27 @@ class Trainer(object):
 
 def test():
     """Function to test your agent."""
+    successes = 0
     for episode in range(5):
         state = env.reset()
-        #print(type(state))
+        print(type(state))
+	
         step = 0
         done = False
         print("*****************************")
         print("EPISODE ", episode)
         for step in range(200):
-            #env.render()
+            env.render()
             # Take the action (index) that have the maximum expected future reward given that state
             action = np.argmax(qtable[state, :])
-            #print(action)
+            print(action)
             new_state, reward, done, info = env.step(action)
-            #print(reward)
+            print(reward)
             if done:
-                print('\n \x1b[6;30;42m' + 'Success!' + '\x1b[0m')
+                if reward == 1:
+                    print('\n \x1b[6;30;42m' + 'Success!' + '\x1b[0m')
                 action = np.argmax(qtable[state, :])
-                #print(action)
+                print(action)
                 env.render()
                 break
             state = new_state
