@@ -44,7 +44,7 @@
 
 \title{Reinforcement Learning Lab Session 6}
 \author{Your Name Here}
- 
+
 \begin{document}
 \maketitle
 \section*{General Information}
@@ -65,28 +65,44 @@ Make a copy of this LaTeX document from folder \textbf{report}, and fill it acco
 
 \section{Bandits}
 \question{1}{Explain, in a few lines, the k-armed Bandit problem. Give an example of a real-world application, detailing actions and rewards.}
-(your answer here)
+In the k-armed Bandit problem, you are choosing between a number of one-armed bandits, each with different probabilities of rewards, and you want to choose the best one.
 
-\question{2}{Derive the incremental updates of the Sample 
-Average method.}
-(your answer here)
+\question{2}{Derive the incremental updates of the Sample Average method.}
+\[Q_{n+1} = \frac{1}{n}\sum_{i=1}^{n}R_i \]
+\[Q_{n+1} = \frac{1}{n}[R_n + \sum_{i=1}^{n-1}R_i] \]
+\[Q_{n+1} = \frac{1}{n}[R_n + \frac{n-1}{n-1}\sum_{i=1}^{n-1}R_i] \]
+\[Q_{n+1} = \frac{1}{n}[R_n + (n-1)Q_n] \]
+\[Q_{n+1} = \frac{1}{n}[R_n + nQ_n - Q_n] \]
+\[Q_{n+1} = Q_n + \frac{1}{n}[R_n - Q_n] \]
 
 
 \question{3}{Explain, with your own words, the difference between Sample Average and Weighted Average methods}
-(your answer here)
+In the Sample Average method each reward will carry the same weight, whereas in the Weighted Average method more weight is given to recent rewards.
+While the Weighted Average method does not converge completely, it gets there faster than the Sample Average.
 
 \question{4}{Explain the impact of the hyper-parameters of the following algorithms: $\epsilon$ in $\epsilon$-greedy, $c$ in UCB, and $\alpha$ in Gradient Bandit. Use extreme values as examples.}
-(your answer here)
+The $\epsilon$ in $\epsilon$-greedy determines with which probability $\epsilon$ we will take a random action.
+A very high $\epsilon$ results in high exploration, meaning we will get performance nearing the Random algorithm.
+A low $\epsilon$ results in high exploration, giving us a low chance to explore possibly better actions.
+
+
+The $c$ in UCB determines how much of the potential of each action we will take into account.
+A very high $c$ will result in almost always taking the least used action, which gives equal performance to the Random algorithm.
+For a low $c$ we will not take the actions potential into account, only it's estimated reward. This is equivalent to the greedy approach.
+
+The $\alpha$ in Gradient Bandit determines how much the preference for all actions changes given a reward of a certain action.
+A very high $\alpha$ results in the preference changing drastically. Giving a high preference for actions with a high reward. Similair to a more greedy approach.
+While with a very low $\alpha$ the change in preference is extremely low, resulting in a more Random approach.
 
 \question{5}{Show that the Sample Average method erases the bias introduced by the initialization of the $Q$ estimates. What does this mean for Optimistic Greedy? Show that, despite this, Optimistic Greedy does not work on non-stationary problems.}
-(your answer here)
+(your answer here) #TODO
 
 \programming{Implement a Sample Average and Weighted Average version of $\epsilon$ greedy on a Non-Stationary k-armed Bandit problem. In order to see results, run the experiment for $10k$ steps, and paste here the resulting performance plot in the Figure \ref{fig:sa_vs_wa} below. Explain your results below.}
-(your explanation here)
+(your explanation here) #TODO
 \begin{figure}[H]
     \centering
     % Change the plot name here:
-    \includegraphics[width=8cm]{plots/your_plot_here.png}
+    \includegraphics[width=8cm]{plots/e_Greedy.png}
     \caption{Comparison: $\epsilon$-greedy algorithm with Sample Average versus Weighted Average updates.}
     \label{fig:sa_vs_wa}
 \end{figure}{}

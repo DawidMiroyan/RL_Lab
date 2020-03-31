@@ -1,4 +1,4 @@
-#!/home/dawid/Documents/2019-2020_sem2/Distributed_AI/RL_Lab/RLenv/bin/python
+#!/home/dawid/Documents/2019-2020_sem2/Reinforcement_Learning/RL_Lab/RLenv/bin/python3
 # EASY-INSTALL-ENTRY-SCRIPT: 'future==0.18.2','console_scripts','futurize'
 __requires__ = 'future==0.18.2'
 import re

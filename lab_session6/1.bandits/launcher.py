@@ -142,11 +142,11 @@ config = {
     'q0': 1
 }
 
-n_runs = 2000
-max_steps = 1000
+n_runs = 100
+max_steps = 10000
 
 ## RUNNING =====================================================================
-kbandit = KBandit(**config)
+kbandit = KBandit_NonStat(**config)
 
 # Un-comment the one you want to use.
 launch_type = 'multiple_agents'

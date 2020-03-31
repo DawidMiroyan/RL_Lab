@@ -65,6 +65,7 @@ class Gaussian_Bandit(Bandit):
         """
         return np.random.normal(self.mean, 1)
 
+
 class Gaussian_Bandit_NonStat(Bandit):
     # Reminder: the distribution mean changes each step over time,
     # with increments following N(m=0,std=0.01)
@@ -96,33 +97,9 @@ class Gaussian_Bandit_NonStat(Bandit):
         self.mean += np.random.normal(0, 0.01)
 
 
-
-class KBandit(Bandit):
-    """ Set of k Gasussian_Bandits """
-
-    def __init__(self, k, **config):
-        """
-        Instantiates the k-armed bandit, with a number of arms, and initializes
-        the set of bandits to new gaussian bandits in a bandits list.
-        The reset() method is supposedly called from outside.
-        Parameters
-        ----------
-        k: positive int
-            Number of arms of the problem.
-        """
-        self.k = k
-        self.best_action = 0
-        self.bandits = [Gaussian_Bandit_NonStat() for _ in range(self.k)]
-
-<<<<<<< HEAD
-    def reset(self):
-        """ Resets each of the k bandits """
-        for bandit in self.bandits:
-            bandit.reset()
-        self.best_action = np.argmax([bandit.mean for bandit in self.bandits])  # printing purposes
-=======
 class KBandit(Bandit):
     """ Set of k Gaussian_Bandits. """
+
     def __init__(self, k, **kwargs):
         """
         Instantiates the k-armed bandit, with a number of arms, and initializes
@@ -134,28 +111,14 @@ class KBandit(Bandit):
             Number of arms of the problem.
         """
         self.k = k
+        self.best_action = 0
         self.bandits = [Gaussian_Bandit() for _ in range(self.k)]
 
     def reset(self):
         """ Resets each of the k bandits. """
         for bandit in self.bandits:
             bandit.reset()
-        self.best_action = np.argmax([bandit.mean for bandit in self.bandits]) # printing purposes
-
-    def pull(self, action:int) -> float:
-        """
-        Pulls the lever from Bandit #action. Returns the reward.
-        Parameters
-        ----------
-        action: positive int < k
-            Lever to pull.
-        Returns
-        -------
-        reward : float
-            Reward for pulling this lever.
-        """
-        return self.bandits[action].pull()
->>>>>>> 61a3bde02e538eb708f7f3ef8fb22c3e4b759a85
+        self.best_action = np.argmax([bandit.mean for bandit in self.bandits])  # printing purposes
 
     def pull(self, action: int) -> float:
         """
@@ -171,15 +134,17 @@ class KBandit(Bandit):
         """
         return self.bandits[action].pull()
 
-    def is_best_action(self, action:int) -> int:
+    def is_best_action(self, action: int) -> int:
         """
         Checks if pulling from Bandit using #action is the best action.
         """
         return int(action == self.best_action)
 
+
 class KBandit_NonStat(Bandit):
     # Reminder: Same as KBandit, with non stationary Bandits.
     """ Set of k Gasussian_Bandits_NonStat """
+
     def __init__(self, k, **config):
         """
         Instantiates the k-armed bandit, with a number of arms, and initializes
@@ -222,7 +187,7 @@ class KBandit_NonStat(Bandit):
             bandit.update_mean()
         self.best_action = np.argmax([bandit.mean for bandit in self.bandits])  # printing purposes
 
-    def is_best_action(self, action:int) -> int:
+    def is_best_action(self, action: int) -> int:
         """
         Checks if pulling from Bandit using #action is the best action.
         """

@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/dawid/Documents/2019-2020_sem2/Distributed_AI/RL_Lab/RLenv"
+VIRTUAL_ENV="/home/dawid/Documents/2019-2020_sem2/Reinforcement_Learning/RL_Lab/RLenv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

@@ -143,7 +143,7 @@ config = {
     'k': 10,
     'lr': 0.1,
     'alpha': 0.25,
-    'eps': 0.1,
+    'eps': 0.01,
     'c': 0.5,
     'q0': 1
 }
@@ -160,17 +160,17 @@ launch_type = 'multiple_agents'
 
 if launch_type == 'multiple_agents':
     agents = [
-        Random_Agent(**config),
-        EpsGreedy(**config),
-        EpsGreedy_SampleAverage(**config),
+        #Random_Agent(**config),
+        #EpsGreedy(**config),
+        #EpsGreedy_SampleAverage(**config),
         OptimisticGreedy(**config),
-        Gradient_Bandit(**config),
-        UCB(**config)
+        #Gradient_Bandit(**config),
+        #UCB(**config)
     ]
     perfs, best_actions = run_multiple_agents(agents, kbandit=kbandit, n_runs=n_runs, max_steps=max_steps)
     # You can change the labels, title and file_name
     labels = ['Random', 'EpsGreedy', 'EpsGreedySA', 'Optimistic', 'Gradient', 'UCB']
-    file_name = 'plots/agent_comparison'
+    file_name = 'plots/high_alpha'
     suptitle = 'Agent comparison on k-armed-Bandit'
 
 elif launch_type == 'spectrum':
