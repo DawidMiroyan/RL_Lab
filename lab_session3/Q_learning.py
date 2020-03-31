@@ -4,7 +4,23 @@ import random
 
 from gym.envs.registration import register
 
+def allmax(a):
+    """ Returns all occurences of the max """
+    if len(a) == 0:
+        return []
+    all_ = [0]
+    max_ = a[0]
+    for i in range(1, len(a)):
+        if a[i] > max_:
+            all_ = [i]
+            max_ = a[i]
+        elif a[i] == max_:
+            all_.append(i)
+    return all_
 
+def my_argmax(v):
+    """ Breaks ties randomly. """
+    return random.choice(allmax(v))
 
 # code to set a gym config
 # 4x4 environment
@@ -30,7 +46,11 @@ state_size = env.observation_space.n
 
 
 # TODO Declare your q-table based on number of states and actions.
+<<<<<<< HEAD
 # numpy arr of 16x4 of datatype float (state_size x action_size)
+=======
+
+>>>>>>> ae21ef0484fceb0ffbe9e2248901c5b059900872
 qtable = np.zeros((state_size, action_size))
 
 
@@ -74,6 +94,7 @@ class Agent(object):
             action to take
 
         """
+<<<<<<< HEAD
         # TODO Write code to check if your agent wants to explore or exploit
         # eps-Greedy approach: act randomly with probability eps
         rand = random.uniform(0, 1)
@@ -87,6 +108,12 @@ class Agent(object):
             choices = np.where(self.qtable[state] == max_elem)[0]	
             return np.random.choice(choices)
 
+=======
+        if np.random.rand() < self.epsilon:
+            return np.random.randint(action_size)
+        else:
+            return my_argmax(self.qtable[state])
+>>>>>>> ae21ef0484fceb0ffbe9e2248901c5b059900872
 
     def learn(self, state, action, reward, new_state):
         """
@@ -107,11 +134,17 @@ class Agent(object):
             new state after action
 
         """
+<<<<<<< HEAD
         #TODO Write code to update q-table
         sample = reward + self.gamma * np.max(self.qtable[new_state])
         self.qtable[state][action] = (1 - self.learning_rate) *\
              self.qtable[state][action] + self.learning_rate * sample
 
+=======
+        self.qtable[state][action] += self.learning_rate * (
+            reward + self.gamma*np.max(self.qtable[new_state]) - self.qtable[state][action]
+        )
+>>>>>>> ae21ef0484fceb0ffbe9e2248901c5b059900872
 
     def update_epsilon(self, episode):
         """
