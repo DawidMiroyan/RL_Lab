@@ -43,7 +43,7 @@ class PolicyIterationAgent(ValueEstimationAgent):
         print("using discount {}".format(discount))
         self.iterations = iterations
         self.values = util.Counter() # A Counter is a dict with default 0
-
+        self.policies = util.Counter() # A Counter is a dict with default 0
         delta = 0.01
         # TODO: Implement Policy Iteration.
         # Exit either when the number of iterations is reached,
@@ -51,7 +51,80 @@ class PolicyIterationAgent(ValueEstimationAgent):
         # Print the number of iterations to convergence.
         # To make the comparison FAIR, one iteration is a single sweep over states.
         # Compute the number of steps until policy convergence, but do not stop
-        # the algorithm until values converge.
+        # the algorithm until values converge. #TODO
+
+        # Init values
+        for s in mdp.getStates():
+            self.values[s] = 0
+            if mdp.isTerminal(s):
+                continue
+            self.policies[s] = mdp.getPossibleActions(s)[0]
+
+        state_iters = 0    # Iterations over state space until policy convergerce
+        policy_iters = 0   # Iterations over algorithm until policy convergerce
+        algo_iters = 0
+
+        def L2_norm(v1, v2):
+            dist = 0
+            for k in v1.keys():
+                dist += (v1[k] - v2[k]) ** 2
+            return dist**(1/2)
+
+        policy_stable = False
+        values_converged = False
+
+        while not values_converged and algo_iters != iterations:
+            # Policy Evaluation
+            dist = delta
+            while dist >= delta:
+                old_values = self.values.copy()
+                for s in mdp.getStates():
+                    # Skip terminal state
+                    if mdp.isTerminal(s):
+                        continue
+                    v = self.values[s]
+                    new_v = 0
+
+                    for s_n, p in mdp.getTransitionStatesAndProbs(s, self.policies[s]):
+                        new_v += p * (mdp.getReward(s, self.policies[s], s_n) + discount*self.values[s_n])
+                    self.values[s] = new_v
+
+                # Calculate the new distance
+                dist = L2_norm(self.values, old_values)
+                if not policy_stable:
+                    state_iters += 1
+            values_converged = True
+
+            # Policy Improvement
+            if not policy_stable:
+                policy_iters += 1
+                state_iters += 1
+
+            policy_stable = True
+            for s in mdp.getStates():
+                if mdp.isTerminal(s):
+                    continue
+
+                old_action = self.policies[s]
+
+                p_list = list()
+                possible_actions = mdp.getPossibleActions(s)
+                for a in possible_actions:
+                    v_sum = 0
+                    for s_n, p in mdp.getTransitionStatesAndProbs(s, a):
+                        v_sum += p * (mdp.getReward(s, a, s_n) + discount * self.values[s_n])
+                    p_list.append(v_sum)
+                # Assign the maximum value to the current state
+                self.policies[s] = possible_actions[np.argmax(p_list)]
+
+                if old_action != self.policies[s]:
+                    policy_stable = False
+                    values_converged = False
+
+            algo_iters += 1
+
+        print(f"Policy Iteration: {state_iters} iterations over the state space")
+        print(f"Policy Iteration: {policy_iters} iterations until policy convergence")
 
     def getValue(self, state):
         """

@@ -19,7 +19,7 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {paragraph}{Question 5}{2}{section*.10}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{Programming}{2}{section*.11}% 
+\contentsline {paragraph}{Programming}{3}{section*.11}% 
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {2}Markov Decision Processes}{3}{section.2}% 
 \defcounter {refsection}{0}\relax 
@@ -27,20 +27,20 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {paragraph}{Question 2}{3}{section*.13}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{Question 3}{3}{section*.14}% 
+\contentsline {paragraph}{Question 3}{4}{section*.14}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{Question 4}{4}{section*.15}% 
+\contentsline {paragraph}{Question 4}{5}{section*.15}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3}Control}{4}{section.3}% 
+\contentsline {section}{\numberline {3}Control}{5}{section.3}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{Programming}{4}{section*.16}% 
+\contentsline {paragraph}{Programming}{5}{section*.16}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{Programming}{5}{section*.17}% 
+\contentsline {paragraph}{Programming}{6}{section*.17}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{Question 1}{5}{section*.18}% 
+\contentsline {paragraph}{Question 1}{6}{section*.18}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{Question 3}{5}{section*.19}% 
+\contentsline {paragraph}{Question 3}{6}{section*.19}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4}Bonus}{5}{section.4}% 
+\contentsline {section}{\numberline {4}Bonus}{6}{section.4}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{Programming}{5}{section*.20}% 
+\contentsline {paragraph}{Programming}{6}{section*.20}% 

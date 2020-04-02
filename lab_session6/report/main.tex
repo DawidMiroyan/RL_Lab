@@ -95,10 +95,15 @@ A very high $\alpha$ results in the preference changing drastically. Giving a hi
 While with a very low $\alpha$ the change in preference is extremely low, resulting in a more Random approach.
 
 \question{5}{Show that the Sample Average method erases the bias introduced by the initialization of the $Q$ estimates. What does this mean for Optimistic Greedy? Show that, despite this, Optimistic Greedy does not work on non-stationary problems.}
-(your answer here) #TODO
+\[Q_{n+1} = Q_n + \frac{1}{n}[R_n - Q_n] \]
+\[Q_{2} = Q_1 + \frac{1}{1}[R_2 - Q_1] \]
+\[Q_{2} = Q_1 + R_2 - Q_1\]
+\[Q_{2} = R_2\]
+We now see that the bias introduced in $Q_1$ is erased from $Q_2$.
+
+For Optimistic Greedy this means that we will first take each of the actions once, given a high enough initial $Q$ setting. Afterwards the algorithm would continue as if it was a normal Epsilon Greedy algorithm.
 
 \programming{Implement a Sample Average and Weighted Average version of $\epsilon$ greedy on a Non-Stationary k-armed Bandit problem. In order to see results, run the experiment for $10k$ steps, and paste here the resulting performance plot in the Figure \ref{fig:sa_vs_wa} below. Explain your results below.}
-(your explanation here) #TODO
 \begin{figure}[H]
     \centering
     % Change the plot name here:
@@ -117,18 +122,26 @@ For questions where a drawing (MDP or diagram) is required, you can use whicheve
 \end{itemize}{}
 
 \question{1}{Define a Markov Decision Process, and the goal of the Reinforcement Learning problem.}
-(your answer here)
+A Markov Decision Processs is a 4-tuple $(S, A, R_a, P_a)$, where
+\begin{itemize}
+    \item $S$ is a finite set of states
+    \item $A$ is a finite set of actions
+    \item $R_a$ is a reward we get because of taking an action in a state
+    \item $P_a$ is a probability function $p(s', r | s, a)$
+\end{itemize}
+
+The goal of the Reinforcement Learning problem is to find a policy which describes the best action for each state in the MDP, known as the optimal policy.
 
 \question{2}{Show that the MDP framework generalizes over Bandits by drawing the Bandits problem as a MDP with reward distributions $r_a$ for each action $a$. Paste your drawing on Figure \ref{fig:bandit_mdp}. Shortly explain your submission.}
 
 \begin{figure}[H]
     \centering
     % Change the plot name here:
-    \includegraphics[width=8cm]{plots/your_plot_here.png}
+    \includegraphics[width=8cm]{plots/Bandit_MDP.png}
     \caption{The MDP corresponding to the Bandit problem with reward distributions $r_a$, $\forall$ actions $a$}.
     \label{fig:bandit_mdp}
 \end{figure}{}
-(your explanation here)
+In bandit problems, the reward for a given action does not depend on which arms were pulled previously. In an MDP this can be modelled by using only 1 state from which all the different actions can be taken.
 
 
 \question{3}{Turn the following statement into a MDP, with states and transitions with actions (named), probabilities and rewards. Paste the graph on Figure \ref{fig:q3}; pick real values for both rewards and probabilities (no unknowns). Shortly explain your submission after the statement and plot.}
@@ -146,11 +159,13 @@ When you have to go back, we assume that people could've come to pick or drop bi
 \begin{figure}[H]
     \centering
     % Change the plot name here:
-    \includegraphics[width=8cm]{plots/your_plot_here.png}
+    \includegraphics[width=16cm]{plots/Velo_MDP.png}
     \caption{The MDP corresponding to the statement of Question 3}.
     \label{fig:q3}
 \end{figure}{}
-(your explanation here)
+The first 2 stations have nodes, "S none", "S few" and "S lot" to represent the amount of free spots. The third station only needs nodes for when there are no empty spots and when there are.
+From these nodes, you can either continue to the next station (next set of nodes) or drop off your bike and walk to the university by going to the "W" node.
+When you decide to go back to the previous station, you arrive at either node "S1" or "S2".
 
 \question{4}{RL has been widely popular lately because of its combination with Deep Learning (using Neural Nets as policy or value function approximators), leading to incredible performances on difficult environments like video games. One such game is the first Mario World. Show how the MDP can look like for the frames of the game. Where can stochasticity be involved?}
 
@@ -168,8 +183,12 @@ Value Iteration only converges in value, as there is no explicit policy. When co
 \programming{Implement Policy Iteration on the course's diamond/pit Gridworld environment.}
 
 \question{1}{Discuss and compare the performances of both algorithms. Under what circumstances can one come on top of the other?}
+For Value Iteration I observed 11 sweeps over the state space, while for Policy Iteration there where 29 sweeps. In Policy Iteration, the policy converged after 3 iterations of Policy Evaluation and Imporvement.
+This means that in most of the sweeps in Policy Iteration, we did not have to iterate over all the possible actions for each state.
 
 \question{3}{Explain the fundamental differences between QLearning and the Value Iteration / Policy Iteration algorithms. Can you see why QLearning is more interesting in the general case?}
+QLearning is model-free where training samples the transitions $(s, a, s', r)$, this means that the agent does not know the state transition probabilities or rewards.
+Only by doing an action from one state to another can the agent discover the reward for doing so.
 
 \section{Bonus}
 \programming{\textbf{BONUS, 1.5pts} Implement the Gridworld drawn on Figure \ref{fig:river_crossing}: a river crossing. The actions are up, down, left, right and "do nothing". The agent needs to cross a river from the lower left corner (state S) to the upper right corner (state G). This $3\times 5$ Gridworld is divided on the 2nd row by a river that might push the agent right upon entering by one, two or three squares, with corresponding probabilities $0.2, 0.5$ and $0.3$. If the agent is pushed off to the far right in the river, the episode ends with reward $-1$. If the agent reaches the goal, the reward is $+1$. Note that it is the transition to the state (i.e. "right" from (0,3) to G=(0,4)) that yields the reward, and states G and red (1,4) are terminal. }

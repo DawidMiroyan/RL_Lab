@@ -45,10 +45,46 @@ class ValueIterationAgent(ValueEstimationAgent):
         self.values = util.Counter() # A Counter is a dict with default 0
 
         delta = 0.01
-        # TODO: Implement Value Iteration.
         # Exit either when the number of iterations is reached,
         # OR until convergence (L2 distance < delta).
         # Print the number of iterations to convergence.
+
+        # Init values
+        for s in mdp.getStates():
+            self.values[s] = 0
+
+        def L2_norm(v1, v2):
+            dist = 0
+            for k in v1.keys():
+                dist += (v1[k] - v2[k]) ** 2
+            return dist**(1/2)
+
+        iters = 0
+        dist = delta
+
+        while dist >= delta:
+            old_values = self.values.copy()
+            for s in mdp.getStates():
+                if mdp.isTerminal(s):
+                    continue
+
+                v = self.values[s]
+                values = list()
+                for a in mdp.getPossibleActions(s):
+                    v_sum = 0
+                    for s_n, p in mdp.getTransitionStatesAndProbs(s, a):
+                        v_sum += p * (mdp.getReward(s, a, s_n) + discount*self.values[s_n])
+                    values.append(v_sum)
+                # Assign the maximum value to the current state
+                self.values[s] = max(values)
+            iters += 1
+            if iters >= iterations:
+                break
+
+            # Calculate the new distance
+            dist = L2_norm(self.values, old_values)
+
+        print(f"Value Iteration: {iters} iterations")
 
     def getValue(self, state):
         """
