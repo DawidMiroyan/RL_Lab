@@ -1,8 +1,10 @@
 gym
 gym[atari]
+matplotlib
 numpy
 opencv-python
 torch
 gin
 tb-nightly
 torchvision
+jupyter
